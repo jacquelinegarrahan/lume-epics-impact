@@ -1,0 +1,12 @@
+# run: conda env create --file environment.yml
+name: lume-epics-impact
+channels:
+  - conda-forge
+dependencies:
+  - python=3.8
+  - distgen
+  - lume-impact
+  - jupyterlab
+  - lume-epics
+  - lume-model
+  - scikit-image

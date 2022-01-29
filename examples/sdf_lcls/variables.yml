@@ -1,0 +1,82 @@
+
+
+input_variables:
+  SOL1: 
+    pvname: SOLN:IN20:121:BACT
+    protocol: ca
+
+  CQ01:
+    pvname: QUAD:IN20:121:BACT
+    protocol: ca
+
+  SQ01: 
+    pvname: SQ01,QUAD:IN20:122:BACT
+    protocol: ca
+
+  L0A_phase:
+    pvname: ACCL:IN20:300:L0A_PDES
+    protocol: ca
+
+  L0B_phase:
+    pvname: ACCL:IN20:400:L0B_PDES
+    protocol: ca
+
+  L0A_voltage:
+    pvname: ACCL:IN20:300:L0A_ADES
+    protocol: ca
+
+  L0B_voltage:
+    pvname: ACCL:IN20:400:L0B_ADES
+    protocol: ca
+
+  QA01: 
+    pvname: QUAD:IN20:361:BACT
+    protocol: ca
+
+  QA02: 
+    pvname: QUAD:IN20:371:BACT
+    protocol: ca
+
+  QE01: 
+    pvname: QUAD:IN20:425:BACT
+    protocol: ca
+
+  QE02: 
+    pvname: QUAD:IN20:441:BACT
+    protocol: ca
+
+  QE03:
+    pvname: QUAD:IN20:511:BACT
+    protocol: ca
+
+  QE04:
+    pvname: QUAD:IN20:525:BACT
+    protocol: ca
+
+  bunch_charge: 
+    pvname: BPMS:IN20:221:TMIT
+    protocol: ca
+
+  vcc_device: 
+    pvname: CAMR:IN20:186
+    protocol: ca
+
+  vcc_array:
+    pvname: CAMR:IN20:186:IMAGE
+    protocol: ca
+
+  vcc_size_x:
+    pvname: CAMR:IN20:186:N_OF_COL
+    protocol: ca
+  
+  vcc_size_y:
+    pvname: CAMR:IN20:186:N_OF_ROW
+    protocol: ca
+  
+  vcc_resolution:
+    pvname: CAMR:IN20:186:RESOLUTION
+    protocol: ca
+  
+  vcc_resolution_units:
+    pvname: CAMR:IN20:186:RESOLUTION.EGU
+    protocol: ca

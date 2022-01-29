@@ -1,0 +1,32 @@
+[machine]
+host="mcc-simul"
+config_file="/sdf/group/ard/impact/lcls-lattice/impact/models/cu_inj/v0/ImpactT.yaml"
+distgen_input_file="/sdf/group/ard/impact/lcls-lattice/distgen/models/cu_inj/vcc_image/distgen.yaml"
+workdir="/sdf/group/ard/impact/output"
+summary_output_dir="/sdf/group/ard/impact/output/summary"
+plot_output_dir="/sdf/group/ard/impact/output/plot"
+archive_dir="/sdf/group/ard/impact/output/archive"
+snapshot_dir="/sdf/group/ard/impact/output/snapshot"
+distgen_laser_file="/sdf/group/ard/impact/output/distgen_laser.txt"
+mpi_run_cmd="mpirun -n {n} --use-hwthread-cpus {command_mpi}"
+num_procs=32
+
+
+[model]
+model=cu_inj
+distgen:n_particle=100_000
+timeout=10000
+header:Nx=32
+header:Ny=32
+header:Nz=32
+stop=16.5
+distgen:t_dist:length:value=6.6
+name="lume-impact-live-demo-cu-inj"
+
+
+[dashboard]
+screen1="YAG02"
+screen2="YAG03"
+screen3="OTR2"
+ylim=[0, 2e-6]           
+name="lume-impact-live-demo-cu-inj"
