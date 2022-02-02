@@ -1,3 +1,5 @@
+title="sdf lcls impact"
+
 [machine]
 host="mcc-simul"
 config_file="/sdf/group/ard/impact/lcls-lattice/impact/models/cu_inj/v0/ImpactT.yaml"
@@ -13,14 +15,14 @@ num_procs=32
 
 
 [model]
-model=cu_inj
-distgen:n_particle=100_000
+model="cu_inj"
+"distgen:n_particle"=100000
 timeout=10000
-header:Nx=32
-header:Ny=32
-header:Nz=32
+"header:Nx"=32
+"header:Ny"=32
+"header:Nz"=32
 stop=16.5
-distgen:t_dist:length:value=6.6
+"distgen:t_dist:length:value"=6.6
 name="lume-impact-live-demo-cu-inj"
 
 
@@ -28,5 +30,5 @@ name="lume-impact-live-demo-cu-inj"
 screen1="YAG02"
 screen2="YAG03"
 screen3="OTR2"
-ylim=[0, 2e-6]           
+ylim=[0.0, 2e-6]           
 name="lume-impact-live-demo-cu-inj"

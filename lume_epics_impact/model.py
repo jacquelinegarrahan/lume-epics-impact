@@ -30,17 +30,22 @@ logger = logging.getLogger(__name__)
 
 class ImpactModel(SurrogateModel):
     # move configuration file parsing into utility
-    def __init__(self, configuration, model):
-        self._model = model
+    def __init__(self, *, configuration, input_variables, output_variables):
 
-        if model == "cu_inj":
-            self._pv_mapping = pd.read_csv(CU_INJ_MAPPING)
-
-        elif model == "f2e_inj":
-            self._pv_mapping = pd.read_csv(F2E_INJ_MAPPING)
+        self.input_variables = input_variables
+        self.output_variables = output_variables
 
         self._configuration = configuration
-        self._model_name = configuration["machine"].get("name")
+        self._model_name = configuration["model"].get("model")
+
+
+
+        if self._model_name == "cu_inj":
+            self._pv_mapping = pd.read_csv(CU_INJ_MAPPING)
+
+        elif self._model_name == "f2e_inj":
+            self._pv_mapping = pd.read_csv(F2E_INJ_MAPPING)
+
 
         self._settings = {
             'distgen:n_particle': self._configuration["model"].get('distgen:n_particle'),   
@@ -116,7 +121,7 @@ class ImpactModel(SurrogateModel):
         G = Generator(gfile)
         #G['xy_dist:file'] =  DISTGEN_LASER_FILE #'distgen_laser.txt'
         G['xy_dist:file'] = self._distgen_laser_file
-        G['n_particle'] = self._configuration["model"]["distgen:n_particle"]
+        G['n_particle'] = self._configuration["model"]["distgen_n_particle"]
         G.run()
         G.particles.plot('x', 'y', figsize=(5,5))
 
@@ -140,8 +145,10 @@ class ImpactModel(SurrogateModel):
         #print('Written:', fname)
         logger.info(f'Output written: {fname}')
 
+        for var in self.output_variables:
+            var.value = dat["output"][var.name]
 
-    
+        return self.output_variables
 
 
 
@@ -169,8 +176,6 @@ y {widths[0]} {center_y}  [{resolution_units}]"""
     return os.path.abspath(filename)
 
 
-
-
 def isolate_image(img, fclip=0.08):
     """
     Uses a masking technique to isolate the VCC image
@@ -180,8 +185,7 @@ def isolate_image(img, fclip=0.08):
     # Clip lowest fclip fraction
     img[img < np.max(img)* fclip] = 0
     
-    
-    # Filter out hot pixels to use aas a mask
+    # Filter out hot pixels to use as a mask
     # https://scikit-image.org/docs/0.12.x/auto_examples/xx_applications/plot_rank_filters.html
     img2 = median(img_as_ubyte(img), disk(2))
     
@@ -206,8 +210,6 @@ def isolate_image(img, fclip=0.08):
     cutimg = img[i0:i1,j0:j1]
     
     return cutimg
-
-
 
 
 def run_merit(impact_obj, itime, dashboard_kwargs):

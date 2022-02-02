@@ -1,13 +1,14 @@
 import logging
+import sys
 
 # Gets or creates a logger
-logger = logging.getLogger()  
+logger = logging.getLogger(__name__)  
 
 # set log level
 logger.setLevel(logging.INFO)
 
 # define file handler and set formatter
-file_handler = logging.FileHandler(f'{PREFIX}.log')
+file_handler = logging.FileHandler(f'test.log')
 #formatter    = logging.Formatter('%(asctime)s : %(levelname)s : %(name)s : %(message)s')
 formatter    = logging.Formatter(fmt="%(asctime)s :  %(name)s : %(message)s ", datefmt="%Y-%m-%dT%H:%M:%S%z")
 

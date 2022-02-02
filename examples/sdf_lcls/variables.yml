@@ -1,82 +1,333 @@
-
-
 input_variables:
   SOL1: 
-    pvname: SOLN:IN20:121:BACT
-    protocol: ca
+      name: SOL1
+      type: scalar
+      default: 0
+      range: [0, 0.55]
 
   CQ01:
-    pvname: QUAD:IN20:121:BACT
-    protocol: ca
+      name: CQ01
+      type: scalar
+      default: 0
+      range: [-0.015, 0.015]
 
   SQ01: 
-    pvname: SQ01,QUAD:IN20:122:BACT
-    protocol: ca
+    name: SQ01
+    type: scalar
+    default: 0
+    range: [-0.015, 0.015]
 
   L0A_phase:
-    pvname: ACCL:IN20:300:L0A_PDES
-    protocol: ca
+    name: L0A_phase
+    type: scalar
+    default: 0
+    range: [0, 0]
 
   L0B_phase:
-    pvname: ACCL:IN20:400:L0B_PDES
-    protocol: ca
+    name: L0B_phase
+    type: scalar
+    default: 0
+    range: [0, 0]
 
   L0A_voltage:
-    pvname: ACCL:IN20:300:L0A_ADES
-    protocol: ca
+    name: L0A_voltage
+    type: scalar
+    default: 0
+    range: [0, 0]
 
   L0B_voltage:
-    pvname: ACCL:IN20:400:L0B_ADES
-    protocol: ca
+    name: L0A_voltage
+    type: scalar
+    default: 0
+    range: [0, 0]
 
   QA01: 
-    pvname: QUAD:IN20:361:BACT
-    protocol: ca
+    name: QA01
+    type: scalar
+    default: 0
+    range: [-20, 20]
 
   QA02: 
-    pvname: QUAD:IN20:371:BACT
-    protocol: ca
+    name: QA02
+    type: scalar
+    default: 0
+    range: [-20, 20]
 
   QE01: 
-    pvname: QUAD:IN20:425:BACT
-    protocol: ca
+    name: QE01
+    type: scalar
+    default: 0
+    range: [-20, 20]
 
   QE02: 
-    pvname: QUAD:IN20:441:BACT
-    protocol: ca
+    name: QE02
+    type: scalar
+    default: 0
+    range: [-20, 20]
 
   QE03:
-    pvname: QUAD:IN20:511:BACT
-    protocol: ca
+    name: QE03
+    type: scalar
+    default: 0
+    range: [-20, 20]
 
   QE04:
-    pvname: QUAD:IN20:525:BACT
-    protocol: ca
+    name: QE04
+    type: scalar
+    default: 0
+    range: [-20, 20]
 
   bunch_charge: 
-    pvname: BPMS:IN20:221:TMIT
-    protocol: ca
-
-  vcc_device: 
-    pvname: CAMR:IN20:186
-    protocol: ca
+    name: QE04
+    type: scalar
+    default: 0
+    range: [0, inf]
 
   vcc_array:
-    pvname: CAMR:IN20:186:IMAGE
-    protocol: ca
+    name: vcc_array
+    type: array
+    default: examples/sdf_lcls/default_vcc_array.npy
 
   vcc_size_x:
-    pvname: CAMR:IN20:186:N_OF_COL
-    protocol: ca
+    name: vcc_size_x
+    type: scalar
+    default: 640
+    range: [[640, 640]]
+    is_constant: true
   
   vcc_size_y:
-    pvname: CAMR:IN20:186:N_OF_ROW
-    protocol: ca
+    name: vcc_size_y
+    type: scalar
+    default: 480
+    range: [480, 480]
+    is_constant: true
   
   vcc_resolution:
-    pvname: CAMR:IN20:186:RESOLUTION
-    protocol: ca
+    name: vcc_resolution
+    type: scalar
+    default: 9
+    range: [9,9]
+    is_constant: true
   
   vcc_resolution_units:
-    pvname: CAMR:IN20:186:RESOLUTION.EGU
-    protocol: ca
+    name: vcc_resolution_units
+    type: array
+    default: um
+    is_constant: true
+
+output_variables:
+  end_t:
+    name: end_t
+    type: scalar
+
+  end_mean_z:
+    name: end_mean_z
+    type: scalar
+  
+  end_moment4_x:
+    name: end_moment4_x
+    type: scalar
+
+  end_moment4_y:
+    name: end_moment4_y
+    type: scalar
+
+  end_moment4_z:
+    name: end_moment4_z
+    type: scalar
+
+  end_loadbalance_min_n_particle:
+    name: end_loadbalance_min_n_particle
+    type: scalar
+  
+  end_loadbalance_max_n_particle:
+    name: end_loadbalance_max_n_particle
+    type: scalar
+
+  end_n_particle:
+    name: end_n_particle
+    type: scalar
+
+  end_norm_emit_z:
+    name: end_norm_emit_z
+    type: scalar
+
+  end_moment3_x:
+    name: end_moment3_x
+    type: scalar
+  
+  end_moment3_y:
+    name: end_moment3_y
+    type: scalar
+  
+  end_moment3_z:
+    name: end_moment3_z
+    type: scalar
+
+  end_mean_y:
+    name: end_mean_y
+    type: scalar
+
+  end_sigma_y:
+    name: end_sigma_y
+    type: scalar
+
+  end_norm_emit_y:
+    name: end_norm_emit_y
+    type: scalar
+
+  end_mean_x:
+    name: end_mean_x
+    type: scalar
+
+  end_sigma_x:
+    name: end_sigma_x
+    type: scalar
+
+  end_norm_emit_x:
+    name: end_norm_emit_x
+    type: scalar
+
+  end_max_amplitude_x:
+    name: end_max_amplitude_x
+    type: scalar
+
+  end_max_amplitude_y:
+    name: end_max_amplitude_y
+    type: scalar
+
+  end_max_amplitude_z:
+    name: end_max_amplitude_z
+    type: scalar
+
+  end_mean_gamma:
+    name: end_mean_gamma
+    type: scalar
+
+  end_mean_beta:
+    name: end_mean_beta
+    type: scalar
+
+  end_max_r:
+    name: end_max_r
+    type: scalar
+
+  end_sigma_gamma:
+    name: end_sigma_gamma
+    type: scalar
+
+  end_moment4_px:
+    name: end_moment4_px
+    type: scalar
+ 
+  end_moment4_py:
+    name: end_moment4_py
+    type: scalar
+
+  end_moment4_pz:
+    name: end_moment4_pz
+    type: scalar
+ 
+  end_mean_pz:
+    name: end_mean_pz
+    type: scalar
+
+  end_sigma_pz:
+    name: end_sigma_pz
+    type: scalar
+ 
+  end_cov_z__pz:
+    name: end_cov_z__pz
+    type: scalar
+
+  end_moment3_px:
+    name: end_moment3_px
+    type: scalar
+  
+  end_moment3_py:
+    name: end_moment3_py
+    type: scalar
+
+  end_moment3_pz:
+    name: end_moment3_pz
+    type: scalar
+
+  end_mean_py:
+    name: end_mean_py
+    type: scalar
+  
+  end_sigma_py:
+    name: end_sigma_py
+    type: scalar
+
+  end_cov_y__py:
+    name: end_cov_y__py
+    type: scalar
+
+  end_mean_px:
+    name: end_mean_px
+    type: scalar
+  
+  end_sigma_px:
+    name: end_sigma_px
+    type: scalar
+
+  end_cov_x__px:
+    name: end_cov_x__px
+    type: scalar
+
+  end_max_amplitude_px:
+    name: end_max_amplitude_px
+    type: scalar
+  
+  end_max_amplitude_py:
+    name: end_max_amplitude_py
+    type: scalar
+
+  end_max_amplitude_pz:
+    name: end_max_amplitude_pz
+    type: scalar
+
+  end_mean_kinetic_energy:
+    name: end_mean_kinetic_energy
+    type: scalar
+  
+  run_time:
+    name: run_time
+    type: scalar
+
+  end_n_particle_loss:
+    name: end_n_particle_loss
+    type: scalar
+
+  end_total_charge:
+    name: end_total_charge
+    type: scalar
+  
+  end_higher_order_energy_spread:
+    name: end_higher_order_energy_spread
+    type: scalar
+
+  end_norm_emit_xy:
+    name: end_norm_emit_xy
+    type: scalar
+  
+  end_norm_emit_4d:
+    name: end_norm_emit_4d
+    type: scalar
+  
+  plot_file:
+    name: plot_file
+    type: scalar
+
+  isotime:
+    name: isotime
+    type: scalar
+
+  fingerprint:
+    name: fingerprint
+    type: scalar
+
+  archive:
+    name: end_mean_z
+    type: archive
