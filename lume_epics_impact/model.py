@@ -46,6 +46,8 @@ class ImpactModel(SurrogateModel):
         elif self._model_name == "f2e_inj":
             self._pv_mapping = pd.read_csv(F2E_INJ_MAPPING)
 
+        self._pv_mapping.set_index("impact_name")
+
 
         self._settings = {
             'distgen:n_particle': self._configuration["model"].get('distgen:n_particle'),   
@@ -59,7 +61,7 @@ class ImpactModel(SurrogateModel):
             'command': self._configuration["machine"].get('command'),
             'command_mpi': self._configuration["machine"].get('command_mpi'),
             'stop': self._configuration["machine"].get('stop'),
-            'distgen:t_dist:length:value': self._configuration["model"].get('distgen:t_dist:length:value'),
+            'distgen:t_dist:length:value': self._configuration["distgen"].get('distgen:t_dist:length:value'),
         }
 
         # Update settings with impact factor
@@ -68,13 +70,13 @@ class ImpactModel(SurrogateModel):
         self._archive_dir = self._configuration["machine"].get("archive_path")
         self._plot_dir = self._configuration["machine"].get("plot_output_dir")
         self._summary_dir = self._configuration["machine"].get("summary_output_dir")
-        self._distgen_laser_file = self._configuration["machine"].get("distgen_laser_file")
-        self._distgen_input_file = self._configuration["machine"].get("distgen_input_file")
+        self._distgen_laser_file = self._configuration["distgen"].get("distgen_laser_file")
+        self._distgen_input_file = self._configuration["distgen"].get("distgen_input_file")
 
         self._impact_config = {
-            'workdir': self._configuration["model"].get('workdir'),
-            'impact_config': self._configuration["model"].get('impact_config'),
-            'disgren_input_file': self._configuration["model"].get('disgen_input_file')
+            'workdir': self._configuration["machine"].get('workdir'),
+            'impact_config': self._configuration["machine"].get('config_file'),
+            'distgen_input_file': self._configuration["distgen"].get('distgen_input_file')
         }
 
 
@@ -87,7 +89,8 @@ class ImpactModel(SurrogateModel):
 
         # convert IMAGE vars 
         if input_variables["vcc_array"].value.ptp() < 128:
-            input_variables["vcc_array"].value = input_variables["vcc_array"].value.astype(np.int8) # Downcast preeptively 
+            downcast = input_variables["vcc_array"].value.astype(np.int8) 
+            input_variables["vcc_array"].value = downcast
 
         if input_variables["vcc_array"].value.ptp() == 0:
             raise ValueError(f'vcc_array has zero extent')
@@ -95,7 +98,8 @@ class ImpactModel(SurrogateModel):
         # scale values by impact factor
         vals = {}
         for var in input_variables.values():
-            vals[var.name] = var.value() * self._pv_mapping["impact"][var.name]
+            if var.name in self._pv_mapping["impact_name"]:
+                vals[var.name] = var.value * self._pv_mapping.loc[self._pv_mapping["impact_name"] == var.name, "impact_factor"].item()
 
         # Initialize distgen
         image = input_variables["vcc_array"].value.reshape(input_variables["vcc_size_y"].value, input_variables["vcc_size_x"].value)
@@ -115,28 +119,32 @@ class ImpactModel(SurrogateModel):
 
         gfile = self._impact_config["distgen_input_file"]
 
-        self._settings['distgen:xy_dist:file'] = self._distgen_laser_file
+        self._settings['distgen:r_dist:file'] = self._distgen_laser_file
 
         # generate distgen dis
         G = Generator(gfile)
+
         #G['xy_dist:file'] =  DISTGEN_LASER_FILE #'distgen_laser.txt'
-        G['xy_dist:file'] = self._distgen_laser_file
-        G['n_particle'] = self._configuration["model"]["distgen_n_particle"]
+
+       # G['xy_dist:file'] = self._distgen_laser_file
+       # G['n_particle'] = self._configuration["model"]["distgen_n_particle"]
         G.run()
         G.particles.plot('x', 'y', figsize=(5,5))
 
 
-        dat = {'isotime': itime, 'inputs': self._settings, 'config': self._config, 'pv_mapping_dataframe': self._pv_mapping.to_dict()}
+        dat = {'isotime': itime, 
+            'inputs': self._settings, 'config': self._impact_config, 'pv_mapping_dataframe': self._pv_mapping.to_dict()}
 
 
         logger.info(f'Running evaluate_impact_with_distgen...')
 
         t0 = time()
+
         dat['outputs'] = evaluate_impact_with_distgen(self._settings,
-                                        merit_f=lambda x: run_merit(x, itime, self._dashboard_kwargs),
-                                        archive_path=self._archive_dir,
-                                        **self._configuration, verbose=False )
-        
+                                            merit_f=lambda x: run_merit(x, itime, self._dashboard_kwargs),
+                                            archive_path=self._archive_dir,
+                                            **self._impact_config, verbose=False )
+
         logger.info(f'...finished in {(time()-t0)/60:.1f} min')
 
         # write summary file

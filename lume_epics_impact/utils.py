@@ -1,5 +1,5 @@
 import toml
-
+import os
 
 def load_configuration(filepath):
 
@@ -8,6 +8,9 @@ def load_configuration(filepath):
     WORKDIR=config["machine"].get('workdir')
     if not WORKDIR:
         raise ValueError("workdir not defined in toml.")
+    
+    if not os.path.isdir(WORKDIR):
+        os.mkdir(WORKDIR)
 
 
     HOST = config["machine"].get('host') # mcc-simul or 'sdf'
@@ -19,7 +22,7 @@ def load_configuration(filepath):
     if not IMPACT_CONFIG_FILE:
         raise ValueError("config_file not defined in toml.")
 
-    DISTGEN_INPUT_FILE=config["machine"].get('distgen_input_file')
+    DISTGEN_INPUT_FILE=config["distgen"].get('distgen_input_file')
     if not DISTGEN_INPUT_FILE:
         raise ValueError("distgen_input_file not defined in toml.")
         
@@ -45,7 +48,7 @@ def load_configuration(filepath):
         raise ValueError("snapshot_dir not defined in toml.")
 
     # Dummy file for distgen
-    DISTGEN_LASER_FILE = config["machine"].get('distgen_laser_file')
+    DISTGEN_LASER_FILE = config["distgen"].get('distgen_laser_file')
     if not DISTGEN_LASER_FILE:
         raise ValueError("distgen_laser_file not defined in toml.")
 

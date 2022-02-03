@@ -1,0 +1,36 @@
+title="sdf lcls impact"
+
+[machine]
+host="local"
+config_file="/Users/jgarra/sandbox/lume-epics-impact/examples/local_lcls/lcls_injector/ImpactT.yaml"
+workdir="/Users/jgarra/sandbox/lume-epics-impact/examples/local_lcls/lcls_injector/output"
+summary_output_dir="/Users/jgarra/sandbox/lume-epics-impact/examples/local_lcls/lcls_injector/output/summary"
+plot_output_dir="/Users/jgarra/sandbox/lume-epics-impact/examples/local_lcls/lcls_injector/output/plot"
+archive_dir="/Users/jgarra/sandbox/lume-epics-impact/examples/local_lcls/lcls_injector/output/archive"
+snapshot_dir="/Users/jgarra/sandbox/lume-epics-impact/examples/local_lcls/lcls_injector/output/snapshot"
+mpi_run_cmd="mpirun -n {n} --use-hwthread-cpus {command_mpi}"
+num_procs=32
+
+
+[model]
+model="cu_inj"
+timeout=10000
+"header:Nx"=32
+"header:Ny"=32
+"header:Nz"=32
+stop=16.5
+name="lume-impact-live-demo-cu-inj"
+
+[distgen]
+"distgen:t_dist:length:value"=6.6
+"distgen:n_particle"=100000
+distgen_input_file="/Users/jgarra/sandbox/lume-epics-impact/examples/local_lcls/lcls_injector/distgen.yaml"
+distgen_laser_file="/Users/jgarra/sandbox/lume-epics-impact/examples/local_lcls/lcls_injector/output/distgen_laser.txt"
+
+
+[dashboard]
+screen1="YAG02"
+screen2="YAG03"
+screen3="OTR2"
+ylim=[0.0, 2e-6]           
+name="lume-impact-live-demo-cu-inj"

@@ -1,70 +1,70 @@
 input_variables:
-  SOL1: 
+  SOL1:solenoid_field_scale: 
     pvname: SOLN:IN20:121:BACT
     protocol: ca
     serve: false
 
-  CQ01:
+  CQ01:b1_gradient:
     pvname: QUAD:IN20:121:BACT
     protocol: ca
     serve: false
 
-  SQ01: 
+  SQ01:b1_gradient: 
     pvname: QUAD:IN20:122:BACT
     protocol: ca
     serve: false
 
-  L0A_phase:
+  L0A_phase:dtheta0_deg:
     pvname: ACCL:IN20:300:L0A_PDES
     protocol: ca
     serve: false
 
-  L0B_phase:
+  L0B_phase:dtheta0_deg:
     pvname: ACCL:IN20:400:L0B_PDES
     protocol: ca
     serve: false
 
-  L0A_voltage:
+  L0A_scale:voltage:
     pvname: ACCL:IN20:300:L0A_ADES
     protocol: ca
     serve: false
 
-  L0B_voltage:
+  L0B_scale:voltage:
     pvname: ACCL:IN20:400:L0B_ADES
     protocol: ca
     serve: false
 
-  QA01: 
+  QA01:b1_gradient: 
     pvname: QUAD:IN20:361:BACT
     protocol: ca
     serve: false
 
-  QA02: 
+  QA02:b1_gradient: 
     pvname: QUAD:IN20:371:BACT
     protocol: ca
     serve: false
 
-  QE01: 
+  QE01:b1_gradient: 
     pvname: QUAD:IN20:425:BACT
     protocol: ca
     serve: false
 
-  QE02: 
+  QE02:b1_gradient: 
     pvname: QUAD:IN20:441:BACT
     protocol: ca
     serve: false
 
-  QE03:
+  QE03:b1_gradient:
     pvname: QUAD:IN20:511:BACT
     protocol: ca
     serve: false
 
-  QE04:
+  QE04:b1_gradient:
     pvname: QUAD:IN20:525:BACT
     protocol: ca
     serve: false
 
-  bunch_charge: 
+  distgen:total_charge:value: 
     pvname: BPMS:IN20:221:TMIT
     protocol: ca
     serve: false
@@ -100,12 +100,60 @@ input_variables:
     serve: false
 
 output_variables:
-  output1:
-    pvname: output1
-    protocol: ca
-
-  output2:
-    pvname: output2
-    protocol: ca
-
-
+  output_summary:
+    pvname: output_summary
+    protocol: pva
+    fields:
+      - end_mean_z
+      - end_moment4_x
+      - end_moment4_y
+      - end_moment4_z
+      - end_loadbalance_min_n_particle
+      - end_loadbalance_max_n_particle
+      - end_n_particle
+      - end_norm_emit_z
+      - end_moment3_x
+      - end_moment3_y
+      - end_moment3_z
+      - end_mean_y
+      - end_sigma_y
+      - end_norm_emit_y
+      - end_mean_x
+      - end_sigma_x
+      - end_norm_emit_x
+      - end_max_amplitude_x
+      - end_max_amplitude_y
+      - end_max_amplitude_z
+      - end_mean_gamma
+      - end_mean_beta
+      - end_max_r
+      - end_sigma_gamma
+      - end_moment4_px
+      - end_moment4_py
+      - end_moment4_pz
+      - end_mean_pz
+      - end_sigma_pz
+      - end_cov_z__pz
+      - end_moment3_px
+      - end_moment3_py
+      - end_moment3_pz
+      - end_mean_py
+      - end_sigma_py
+      - end_cov_y__py
+      - end_mean_px
+      - end_sigma_px
+      - end_cov_x__px
+      - end_max_amplitude_px
+      - end_max_amplitude_py
+      - end_max_amplitude_pz
+      - end_mean_kinetic_energy
+      - run_time
+      - end_n_particle_loss
+      - end_total_charge
+      - end_higher_order_energy_spread
+      - end_norm_emit_xy
+      - end_norm_emit_4d
+      - plot_file
+      - isotime
+      - fingerprint
+      - archive

@@ -1,84 +1,84 @@
 input_variables:
-  SOL1: 
-      name: SOL1
+  SOL1:solenoid_field_scale: 
+      name: SOL1:solenoid_field_scale
       type: scalar
       default: 0
       range: [0, 0.55]
 
-  CQ01:
-      name: CQ01
+  CQ01:b1_gradient:
+      name: CQ01:b1_gradient
       type: scalar
       default: 0
       range: [-0.015, 0.015]
 
-  SQ01: 
-    name: SQ01
+  SQ01:b1_gradient: 
+    name: SQ01:b1_gradient
     type: scalar
     default: 0
     range: [-0.015, 0.015]
 
-  L0A_phase:
-    name: L0A_phase
+  L0A_phase:dtheta0_deg:
+    name: L0A_phase:dtheta0_deg
     type: scalar
     default: 0
     range: [0, 0]
 
-  L0B_phase:
-    name: L0B_phase
+  L0B_phase:dtheta0_deg:
+    name: L0B_phase:dtheta0_deg
     type: scalar
     default: 0
     range: [0, 0]
 
-  L0A_voltage:
-    name: L0A_voltage
+  L0A_scale:voltage:
+    name: L0A_scale:voltage
     type: scalar
     default: 0
     range: [0, 0]
 
-  L0B_voltage:
-    name: L0A_voltage
+  L0B_scale:voltage:
+    name: L0B_scale:voltage
     type: scalar
     default: 0
     range: [0, 0]
 
-  QA01: 
-    name: QA01
+  QA01:b1_gradient: 
+    name: QA01:b1_gradient
     type: scalar
     default: 0
     range: [-20, 20]
 
-  QA02: 
-    name: QA02
+  QA02:b1_gradient: 
+    name: QA02:b1_gradient
     type: scalar
     default: 0
     range: [-20, 20]
 
-  QE01: 
-    name: QE01
+  QE01:b1_gradient: 
+    name: QE01:b1_gradient
     type: scalar
     default: 0
     range: [-20, 20]
 
-  QE02: 
-    name: QE02
+  QE02:b1_gradient: 
+    name: QE02:b1_gradient
     type: scalar
     default: 0
     range: [-20, 20]
 
-  QE03:
-    name: QE03
+  QE03:b1_gradient:
+    name: QE03:b1_gradient
     type: scalar
     default: 0
     range: [-20, 20]
 
-  QE04:
-    name: QE04
+  QE04:b1_gradient:
+    name: QE04:b1_gradient
     type: scalar
     default: 0
     range: [-20, 20]
 
-  bunch_charge: 
-    name: QE04
+  distgen:total_charge:value: 
+    name: distgen:total_charge:value
     type: scalar
     default: 0
     range: [0, inf]
@@ -92,28 +92,24 @@ input_variables:
     name: vcc_size_x
     type: scalar
     default: 640
-    range: [[640, 640]]
-    is_constant: true
+    range: [640, 640]
   
   vcc_size_y:
     name: vcc_size_y
     type: scalar
     default: 480
     range: [480, 480]
-    is_constant: true
   
   vcc_resolution:
     name: vcc_resolution
     type: scalar
     default: 9
     range: [9,9]
-    is_constant: true
   
   vcc_resolution_units:
     name: vcc_resolution_units
     type: array
     default: um
-    is_constant: true
 
 output_variables:
   end_t:
@@ -329,5 +325,5 @@ output_variables:
     type: scalar
 
   archive:
-    name: end_mean_z
-    type: archive
+    name: archive
+    type: scalar

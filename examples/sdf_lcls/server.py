@@ -6,8 +6,6 @@ from lume_epics_impact.model import ImpactModel
 from lume_epics_impact.utils import load_configuration
 import logging
 
-print(os.environ)
-
 if __name__ == "__main__":
     with open("examples/sdf_lcls/variables.yml", "r") as f:
         input_variables, output_variables = variables_from_yaml(f)
