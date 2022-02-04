@@ -11,7 +11,10 @@ archive_dir="/sdf/group/ard/impact/output/archive"
 snapshot_dir="/sdf/group/ard/impact/output/snapshot"
 distgen_laser_file="/sdf/group/ard/impact/output/distgen_laser.txt"
 mpi_run_cmd="mpirun -n {n} --use-hwthread-cpus {command_mpi}"
+command="/sdf/group/ard/impact/bin/ImpactTexe"
+command_mpi="/sdf/group/ard/impact/bin/ImpactTexe-mpi"
 num_procs=32
+use_mpi=False
 
 
 [model]

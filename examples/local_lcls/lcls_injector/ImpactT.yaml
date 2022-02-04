@@ -1,6 +1,4 @@
-input_file: ImpactT_template.in
-
-verbose: False
+input_file: examples/local_lcls/lcls_injector/ImpactT.in
 
 group:
 
@@ -44,7 +42,7 @@ group:
     ele_names:  [ L0A_entrance, L0A_body_1, L0A_body_2, L0A_exit ]
     absolute: True    
     #var_name: rf_field_scale
-    #factors: [0.86571945106805, 1, 1, 0.86571945106805]  # sin(k*d) with d = 3.5e-2 m 
+    #factors: [0.86571945106805, 1, 1, 0.86571945106805]   sin(k*d) with d = 3.5e-2 m 
     #value: 30048347.300712895
     var_name: voltage
     attributes: rf_field_scale

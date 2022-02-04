@@ -1,0 +1,1 @@
+mpirun -n 2 --use-hwthread-cpus /Users/jgarra/miniconda3/envs/lume-epics-impact/bin/ImpactTexe-mpi

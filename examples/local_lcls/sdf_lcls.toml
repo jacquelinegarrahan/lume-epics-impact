@@ -8,8 +8,10 @@ summary_output_dir="/Users/jgarra/sandbox/lume-epics-impact/examples/local_lcls/
 plot_output_dir="/Users/jgarra/sandbox/lume-epics-impact/examples/local_lcls/lcls_injector/output/plot"
 archive_dir="/Users/jgarra/sandbox/lume-epics-impact/examples/local_lcls/lcls_injector/output/archive"
 snapshot_dir="/Users/jgarra/sandbox/lume-epics-impact/examples/local_lcls/lcls_injector/output/snapshot"
-mpi_run_cmd="mpirun -n {n} --use-hwthread-cpus {command_mpi}"
-num_procs=32
+mpi_run_cmd="mpirun -n {nproc} --use-hwthread-cpus {command_mpi}"
+command="/Users/jgarra/miniconda3/envs/lume-epics-impact/bin/ImpactTexe"
+command_mpi="/Users/jgarra/miniconda3/envs/lume-epics-impact/bin/ImpactTexe-mpi"
+num_procs=2
 
 
 [model]
