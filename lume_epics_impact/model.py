@@ -13,10 +13,10 @@ import pandas as pd
 from time import sleep, time
 import logging
 import os
+import yaml
+import sys
 
 import numpy as np
-import os
-
 
 from skimage.filters import sobel
 from skimage.util import img_as_ubyte
@@ -50,7 +50,7 @@ class ImpactModel(SurrogateModel):
 
 
         self._settings = {
-            'distgen:n_particle': self._configuration["model"].get('distgen:n_particle'),   
+            'distgen:n_particle': self._configuration["distgen"].get('distgen:n_particle'),   
             'timeout': self._configuration["model"].get('timeout'),
             'header:Nx': self._configuration["model"].get('header:Nx'),
             'header:Ny': self._configuration["model"].get('header:Ny'),
@@ -73,13 +73,24 @@ class ImpactModel(SurrogateModel):
         self._distgen_laser_file = self._configuration["distgen"].get("distgen_laser_file")
         self._distgen_input_file = self._configuration["distgen"].get("distgen_input_file")
 
+
+        # kind of odd workaround
+        with open(self._configuration["machine"].get('config_file'), "r") as stream:
+            try:
+                impact_config = yaml.safe_load(stream)
+            except yaml.YAMLError as exc:
+                print(exc)
+
+        impact_config['use_mpi'] = self._configuration["machine"].get('use_mpi')
+        impact_config['workdir'] = self._configuration["machine"].get('workdir')
+        
         self._impact_config = {
             'workdir': self._configuration["machine"].get('workdir'),
-            'impact_config': self._configuration["machine"].get('config_file'),
+            'impact_config': impact_config,
             'distgen_input_file': self._configuration["distgen"].get('distgen_input_file')
         }
 
-
+    
         self._dashboard_kwargs = self._configuration.get("dashboard")
 
 
@@ -122,14 +133,17 @@ class ImpactModel(SurrogateModel):
         self._settings['distgen:r_dist:file'] = self._distgen_laser_file
 
         # generate distgen dis
-        G = Generator(gfile)
+      #  G = Generator(gfile)
 
         #G['xy_dist:file'] =  DISTGEN_LASER_FILE #'distgen_laser.txt'
 
        # G['xy_dist:file'] = self._distgen_laser_file
-       # G['n_particle'] = self._configuration["model"]["distgen_n_particle"]
-        G.run()
-        G.particles.plot('x', 'y', figsize=(5,5))
+       # G['n_particle'] = self._configuration["distgen"]["distgen:n_particle"]
+       # G.run()
+       # G.particles.plot('x', 'y', figsize=(5,5))
+
+        print(self._impact_config)
+       # sys.exit()
 
 
         dat = {'isotime': itime, 
@@ -141,22 +155,26 @@ class ImpactModel(SurrogateModel):
         t0 = time()
 
         dat['outputs'] = evaluate_impact_with_distgen(self._settings,
-                                            merit_f=lambda x: run_merit(x, itime, self._dashboard_kwargs),
+        #                                    merit_f=lambda x: run_merit(x, itime, self._dashboard_kwargs),
                                             archive_path=self._archive_dir,
-                                            **self._impact_config, verbose=False )
+                                            **self._impact_config,
+                                            verbose=True)
 
-        logger.info(f'...finished in {(time()-t0)/60:.1f} min')
-
-        # write summary file
-        fname = fname=f'{self._summary_dir}/{self._model_name}-{itime}.json'
-        json.dump(dat, open(fname, 'w'))
-        #print('Written:', fname)
-        logger.info(f'Output written: {fname}')
-
-        for var in self.output_variables:
-            var.value = dat["output"][var.name]
+        print(dat)
 
         return self.output_variables
+        #  logger.info(f'...finished in {(time()-t0)/60:.1f} min')
+
+        # write summary file
+       # fname = fname=f'{self._summary_dir}/{self._model_name}-{itime}.json'
+       # json.dump(dat, open(fname, 'w'))
+        #print('Written:', fname)
+       # logger.info(f'Output written: {fname}')
+
+        #for var in self.output_variables:
+        #    var.value = dat["output"][var.name]
+
+        #return self.output_variables
 
 
 
