@@ -312,18 +312,17 @@ output_variables:
     name: end_norm_emit_4d
     type: scalar
   
-  plot_file:
-    name: plot_file
-    type: scalar
-
   isotime:
     name: isotime
-    type: scalar
+    type: array
+    value_type: string
 
   fingerprint:
     name: fingerprint
-    type: scalar
+    type: array
+    value_type: string
 
   archive:
     name: archive
-    type: scalar
+    type: array
+    value_type: string

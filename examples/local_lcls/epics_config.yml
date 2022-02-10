@@ -104,6 +104,7 @@ output_variables:
     pvname: output_summary
     protocol: pva
     fields:
+      - end_t
       - end_mean_z
       - end_moment4_x
       - end_moment4_y
@@ -153,7 +154,6 @@ output_variables:
       - end_higher_order_energy_spread
       - end_norm_emit_xy
       - end_norm_emit_4d
-      - plot_file
       - isotime
       - fingerprint
       - archive

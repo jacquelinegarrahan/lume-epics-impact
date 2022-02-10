@@ -1,9 +1,6 @@
 input_file: examples/local_lcls/lcls_injector/ImpactT.in
 
 group:
-
-
-
   GUN_phase:
     ele_names: [ GUN ]
     var_name: dtheta0_deg

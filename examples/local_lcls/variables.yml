@@ -1,24 +1,21 @@
 input_variables:
+
   SOL1:solenoid_field_scale: 
-      name: SOL1:solenoid_field_scale
       type: scalar
       default: 0
       range: [0, 0.55]
 
   CQ01:b1_gradient:
-      name: CQ01:b1_gradient
       type: scalar
       default: 0
       range: [-0.015, 0.015]
 
   SQ01:b1_gradient: 
-    name: SQ01:b1_gradient
     type: scalar
     default: 0
     range: [-0.015, 0.015]
 
   L0A_phase:dtheta0_deg:
-    name: L0A_phase:dtheta0_deg
     type: scalar
     default: 0
     range: [0, 0]
@@ -312,18 +309,17 @@ output_variables:
     name: end_norm_emit_4d
     type: scalar
   
-  plot_file:
-    name: plot_file
-    type: scalar
-
   isotime:
     name: isotime
-    type: scalar
+    type: array
+    value_type: string
 
   fingerprint:
     name: fingerprint
-    type: scalar
+    type: array
+    value_type: string
 
   archive:
     name: archive
-    type: scalar
+    type: array
+    value_type: string
