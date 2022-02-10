@@ -8,7 +8,6 @@ from distgen import Generator
 import numpy as np
 import json
 from lume_epics_impact import CU_INJ_MAPPING, F2E_INJ_MAPPING
-from lume_epics_impact.dashboard import make_dashboard
 import pandas as pd
 from time import sleep, time
 import logging
@@ -222,22 +221,6 @@ def isolate_image(img, fclip=0.08):
     cutimg = img[i0:i1,j0:j1]
     
     return cutimg
-
-
-def run_merit(impact_obj, itime, dashboard_kwargs):
-    merit = default_impact_merit(impact_obj)
-    # Make the dashboard from the evaluated object
-    plot_file = make_dashboard(impact_obj, itime=itime, **dashboard_kwargs)
-    #print('Dashboard written:', plot_file)
-    logger.info(f'Dashboard written: {plot_file}')
-    
-    # Assign extra info
-    merit['plot_file'] = plot_file    
-    merit['isotime'] = itime
-    
-    # Clear any buffers
-    plt.close('all')
-    return merit
 
 
 def isolate_image(img, fclip=0.08):
