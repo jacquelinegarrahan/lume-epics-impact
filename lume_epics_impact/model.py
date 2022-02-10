@@ -147,26 +147,20 @@ class ImpactModel(SurrogateModel):
                                             **self._impact_config,
                                             verbose=False)
 
+        logger.info(f'...finished in {(time()-t0)/60:.1f} min')
+
         for var_name in dat['outputs']:
             if var_name in self.output_variables:
                 self.output_variables[var_name].value = dat['outputs'][var_name]
 
         self.output_variables["isotime"].value = dat["isotime"]
-            
-
-        return list(self.output_variables.values())
-        #  logger.info(f'...finished in {(time()-t0)/60:.1f} min')
 
         # write summary file
-       # fname = fname=f'{self._summary_dir}/{self._model_name}-{itime}.json'
-       # json.dump(dat, open(fname, 'w'))
-        #print('Written:', fname)
-       # logger.info(f'Output written: {fname}')
+        fname = fname=f"{self._summary_dir}/{self._model_name}-{dat['isotime']}.json"
+        json.dump(dat, open(fname, 'w'))
+        logger.info(f'Output written: {fname}')
 
-        #for var in self.output_variables:
-        #    var.value = dat["output"][var.name]
-
-        #return self.output_variables
+        return list(self.output_variables.values())
 
 
 
