@@ -36,9 +36,7 @@ class ImpactModel(SurrogateModel):
         self.output_variables = output_variables
 
         self._configuration = configuration
-        self._model_name = configuration["model"].get("model")
-
-
+        self._model_name = configuration["impact"].get("model")
 
         if self._model_name == "cu_inj":
             self._pv_mapping = pd.read_csv(CU_INJ_MAPPING)
@@ -51,23 +49,23 @@ class ImpactModel(SurrogateModel):
 
         self._settings = {
             'distgen:n_particle': self._configuration["distgen"].get('distgen:n_particle'),   
-            'timeout': self._configuration["model"].get('timeout'),
-            'header:Nx': self._configuration["model"].get('header:Nx'),
-            'header:Ny': self._configuration["model"].get('header:Ny'),
-            'header:Nz': self._configuration["model"].get('header:Nz'),
+            'timeout': self._configuration["impact"].get('timeout'),
+            'header:Nx': self._configuration["impact"].get('header:Nx'),
+            'header:Ny': self._configuration["impact"].get('header:Ny'),
+            'header:Nz': self._configuration["impact"].get('header:Nz'),
+            'stop': self._configuration["impact"].get('stop'),
             'numprocs': self._configuration["machine"].get('num_procs'),
             'mpi_run': self._configuration["machine"].get('mpi_run_cmd'),
             'workdir': self._configuration["machine"].get('workdir'),
             'command': self._configuration["machine"].get('command'),
             'command_mpi': self._configuration["machine"].get('command_mpi'),
-            'stop': self._configuration["machine"].get('stop'),
             'distgen:t_dist:length:value': self._configuration["distgen"].get('distgen:t_dist:length:value'),
         }
 
         # Update settings with impact factor
         self._settings.update(dict(zip(self._pv_mapping['impact_name'], self._pv_mapping['impact_factor'])))
 
-        self._archive_dir = self._configuration["machine"].get("archive_path")
+        self._archive_dir = self._configuration["machine"].get("archive_dir")
         self._plot_dir = self._configuration["machine"].get("plot_output_dir")
         self._summary_dir = self._configuration["machine"].get("summary_output_dir")
         self._distgen_laser_file = self._configuration["distgen"].get("distgen_laser_file")
@@ -89,7 +87,6 @@ class ImpactModel(SurrogateModel):
             'impact_config': impact_config,
             'distgen_input_file': self._configuration["distgen"].get('distgen_input_file')
         }
-
     
         self._dashboard_kwargs = self._configuration.get("dashboard")
 
@@ -130,24 +127,14 @@ class ImpactModel(SurrogateModel):
 
         gfile = self._impact_config["distgen_input_file"]
 
-        self._settings['distgen:r_dist:file'] = self._distgen_laser_file
+        self._settings['distgen:xy_dist:file'] = self._distgen_laser_file
 
-        # generate distgen dis
-      #  G = Generator(gfile)
-
-        #G['xy_dist:file'] =  DISTGEN_LASER_FILE #'distgen_laser.txt'
-
-       # G['xy_dist:file'] = self._distgen_laser_file
-       # G['n_particle'] = self._configuration["distgen"]["distgen:n_particle"]
-       # G.run()
-       # G.particles.plot('x', 'y', figsize=(5,5))
-
-        print(self._impact_config)
-       # sys.exit()
+        df = self._pv_mapping.copy()
+        df['pv_value'] = [input_variables[k].value for k in input_variables if "vcc_" not in k]
 
 
         dat = {'isotime': itime, 
-            'inputs': self._settings, 'config': self._impact_config, 'pv_mapping_dataframe': self._pv_mapping.to_dict()}
+            'inputs': self._settings, 'config': self._impact_config, 'pv_mapping_dataframe': df.to_dict()}
 
 
         logger.info(f'Running evaluate_impact_with_distgen...')
@@ -155,14 +142,19 @@ class ImpactModel(SurrogateModel):
         t0 = time()
 
         dat['outputs'] = evaluate_impact_with_distgen(self._settings,
-        #                                    merit_f=lambda x: run_merit(x, itime, self._dashboard_kwargs),
+                                        #    merit_f=lambda x: run_merit(x, itime, self._dashboard_kwargs),
                                             archive_path=self._archive_dir,
                                             **self._impact_config,
-                                            verbose=True)
+                                            verbose=False)
 
-        print(dat)
+        for var_name in dat['outputs']:
+            if var_name in self.output_variables:
+                self.output_variables[var_name].value = dat['outputs'][var_name]
 
-        return self.output_variables
+        self.output_variables["isotime"].value = dat["isotime"]
+            
+
+        return list(self.output_variables.values())
         #  logger.info(f'...finished in {(time()-t0)/60:.1f} min')
 
         # write summary file
